@@ -15,8 +15,8 @@
 			<tr>
 				<th class="center">이메일 주소(아이디)</th>
 				<td>
-					<input type="text" style="font-size: 15px; width: 100px;"/> @
-					<input type="text" name="email2" style="font-size: 15px; width: 100px;"/>
+					<input type="text" style="font-size: 15px; width: 150px;"/> @
+					<input type="text" name="email2" style="font-size: 15px; width: 150px;"/>
 					<select name="email3" id="email3" onChange="changeEmailDomain()"  <c:if test="${updateFlag eq 'Y'}">disabled</c:if>>
 						<option value="">메일선택</option>
 						<option value="naver.com">naver.com</option>
@@ -31,13 +31,13 @@
 			<tr>
 				<th class="center">비밀번호</th>
 				<td>
-					<input type="text" style="font-size: 15px;"/>
+					<input type="password" style="font-size: 15px;"/>
 				</td>
  			</tr>
 			<tr>
 				<th class="center">비밀번호 확인</th>
 				<td>
-					<input type="text" style="font-size: 15px; "/>
+					<input type="password" style="font-size: 15px; "/>
 				</td>
 			</tr>
 			<tr>

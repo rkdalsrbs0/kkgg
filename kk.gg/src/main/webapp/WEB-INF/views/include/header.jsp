@@ -173,9 +173,6 @@ input {
   padding: 3rem 0;
 }
 
-.form input[type="password"], .form input[type="text"], .form input[type="submit"] {
-  width: 100%;
-}
 .form--login {
   color: #606468;
 }
@@ -258,38 +255,33 @@ input {
 .grid__container {
   margin: 0 auto;
   max-width: 20rem;
-  width: 90%;
 }
 
 </style>
-	<form name="login_member01" method="post">
+	<form name="login_member01" class="form form--login" method="post">
 		<div id="evalpop" class="white_content" style="visibility: hidden;">
 			<div class="eval_tit">
-				<form name="notice_form">
 					KKGG 로그인 
-				</form>
 			</div>
 
 			<div class="list_cover02 p20" style="background-color: lavender; border-radius: 0px 0px 10px 10px / 0px 0px 10px 10px;">
 				<div class="site__container">
     <div class="grid__container">
-		<form action="" method="post" class="form form--login">
         <div class="form__field">
-          <label class="fontawesome-user" for="login__username"><span class="hidden">Username</span></label>
+          <label class="fontawesome-user" for="login__username"><span class="hidden">아이디</span></label>
           <input id="login__username" type="text" class="form__input" placeholder="Username" required>
         </div>
 
         <div class="form__field">
-          <label class="fontawesome-lock" for="login__password"><span class="hidden">Password</span></label>
+          <label class="fontawesome-lock" for="login__password"><span class="hidden">비밀번호</span></label>
           <input id="login__password" type="password" class="form__input" placeholder="Password" required>
         </div>
 
         <div class="form__field">
-          <input type="submit" value="Log In">
+          <input type="submit" value="LogIn" style="width: 350px;">
         </div>
 
-      <p class="text--center">Not a member? <a href="#">Sign up now</a> <span class="fontawesome-arrow-right"></span></p>
-		</form>
+      <p class="text--center">아직 KKGG 회원이 아니세요?? <a href="/userJoin">회원가입 ≫</a> <span class="fontawesome-arrow-right"></span></p>
     </div>
 
   </div>
