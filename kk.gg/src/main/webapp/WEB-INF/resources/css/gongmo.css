@@ -55,7 +55,7 @@ h4 { font-size:18px; color:#000; margin-bottom:10px;}
 .sub ul li { padding:10px 20px 0;font-size:15px; color:#fff !important;}
 .sub ul li a { padding-bottom:10px; font-size:15px; color:#fff !important; border-bottom:none;}
 .sub ul li a:hover {font-weight:bold;}
-.gnb li:hover .sub { display:block; margin-top: -3px;}
+.gnb li:hover .sub { display:block; margin-top: 6px;}
 
 .outline_tit {font-size:24px; color:#0090d0; background:url(../img/list_tit.gif) 0 3px no-repeat; padding-left:15px;}
 .outline_txt {padding:15px; margin-bottom:30px; border-bottom:1px solid #dfdfdf;}
@@ -171,7 +171,7 @@ textarea{
 	}
 
 .agree_box { margin:10px 0; padding:10px; font-size:13px; height:200px; border:1px solid #ccc; overflow:auto; }
-.gray_box { margin:30px 0; padding:20px; background:#efefef;}
+.gray_box { margin:30px 0; padding:20px; background:lavender;}
 .agree_check {overflow:hidden; margin-bottom:30px; width:100%;}
 
 .apply_end {margin:0 auto; width:400px; padding:50px; border:15px solid #efefef; text-align:center;}

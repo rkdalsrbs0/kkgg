@@ -29,7 +29,7 @@
 
 /* reset */
 html {margin:0; padding:0; -webkit-text-size-adjust:none}
-body {font-weight:normal; font-size:16px; line-height:24px; font-family:'Nanum', 'dotum', 'AppleGothic'; color:#666666;  -webkit-text-size-adjust:none}
+body {font-weight:normal; font-size:16px; line-height:24px; font-family:'Nanum', 'dotum', 'AppleGothic'; color:lightslategrey;  -webkit-text-size-adjust:none}
 html, body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, legend, input, textarea, radio, select, p, button {margin:0; padding:0}
 h1, h2, h3, h4, h5, h6 {font-weight:normal; font-size:100%}
 ul, ol, li {list-style:none}
@@ -44,9 +44,9 @@ caption,legend {visibility:hidden; overflow:hidden; width:0; height:0; font-size
 input,textarea,select {vertical-align:middle; color:#444}
 button, label, input[type=image] {cursor:pointer; vertical-align:middle}
 input[type="text"],
-input[type="password"] {border:1px solid #ccc; padding:0 2px}
+input[type="password"] {border:1px solid #ccc; padding:0 2px; height: 30px;}
 select, textarea {border:1px solid #ccc; color:#444; font-family:'Nanum'}
-select {height:22px;}
+select {height:30px;}
 strong, b, th {font-weight:700}
 
 table {width:100%; border-spacing:0}

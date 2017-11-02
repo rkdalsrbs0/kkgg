@@ -26,15 +26,8 @@
 						<option value="korea.com">korea.com</option>
 						<option value="hanmail.net">hanmail.net</option>
 					</select>
-					<a href="/userJoinEmail" style="margin-left: 5px; background: #dfdfdf; border: 1px solid #999; font-size: 13px; padding: 5px; border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;">인증요청</a>
 				</td>
 			</tr>
-			<tr>
-				<th class="center">인증번호</th>
-				<td>
-					<input type="text" style="font-size: 15px;"/>
-				</td>
- 			</tr>
 			<tr>
 				<th class="center">비밀번호</th>
 				<td>
@@ -158,32 +151,47 @@
 						일
 					</td>
 				</tr>
+				<tr>
+					<th>연락처</th>
+					<td>
+						<select name="cellno1" id="cellno1"  >
+							<option value="">선택</option>
+							<option value="010" <c:if test="${applyMap.cellno1 eq '010'}">selected</c:if>>010</option>
+							<option value="011" <c:if test="${applyMap.cellno1 eq '011'}">selected</c:if>>011</option>
+							<option value="016" <c:if test="${applyMap.cellno1 eq '016'}">selected</c:if>>016</option>
+							<option value="017" <c:if test="${applyMap.cellno1 eq '017'}">selected</c:if>>017</option>
+							<option value="018" <c:if test="${applyMap.cellno1 eq '018'}">selected</c:if>>018</option>
+							<option value="019" <c:if test="${applyMap.cellno1 eq '019'}">selected</c:if>>019</option>
+						</select> - 
+						<input type="text" class="txt w_50" name="cellno2" id="cellno2" value="${applyMap.cellno2}" maxlength="4" > - 
+						<input type="text" class="txt w_50" name="cellno3" id="cellno3" value="${applyMap.cellno3}" maxlength="4">
+						<p><span class="t_gray small">* 휴대전화번호는 필수 입력 사항입니다.</span></p>
+					</td>
+					</tr>
+					<tr>
+					<th>성별</th>
+					<td>
+				      <input type="radio" name="view2" name="gender" value="week2" id="week2" checked>
+				      <label for="week2">남자</label>
+				      <input type="radio" name="view2" name="gender" value="month2" id="month2">
+				      <label for="month2">여자</label>
+					</td>
+				</tr>
 			</table>
-			</div>
-			<div class="list_cover02 section mt30">
-				<div class="btn_area mt30 t_notice">
-				※ 접수평가완료 후 특이사항이 있을 경우 작성해주시기 바랍니다
-			</div>
-				<table class="list_table02">
-					<colgroup>
-						<col width="200px">
-						<col width="">
-					</colgroup>
-					<tr>
-					  <th>종합의견</th>
-					  <td><textarea name="totalScore" style="height:100px;"></textarea></td>
-					</tr>
-					<tr>
-					  <th>평가자</th>
-					  <td>소속 : <span class="bold"></span> / 성명 : <span class="bold"></span></td>
-					</tr>
-				</table>
+			</div><br>
+				<h3 class="mt30" style="color: #9C89B8;">회원가입 주의 사항</h3>
+	
+				<div class="gray_box">
+					<p class="bold">⊙ 모든 항목들은 반드시 입력해야 합니다.</p> 
+					<p class="bold">⊙ 허위로 작성된 정보일 경우 승인 보류되거나 임의로 삭제될 수 있습니다.</p> 
+					<p class="bold">⊙ 회원가입은 무료입니다.</p>
+					<p class="bold">⊙ 가입하기 클릭 후 메일인증이  필요합니다.</p>  
+				</div>
 			</div>
 			<div class="btn_area mt30">
 				<a href="" class="btn_black">가입하기</a> 
 				<a href="/" class="btn_gray">홈으로</a> 
 			</div>
-	</div>
 	</form>
 	<c:import url="/WEB-INF/views/include/footer.jsp" />
 	<script>

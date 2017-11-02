@@ -35,19 +35,8 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value="/login")
-	public String login(Login login, Model model, HttpSession session){
-			Login loginInfo = loginService.selectID(login);
-		if(loginInfo !=null){
-			session.setAttribute("id", loginInfo.getId());
-			session.setAttribute("menu", loginInfo.getDivision());
-			model.addAttribute("result", "login");
-			model.addAttribute("resultMsg", "로그인이 성공하였습니다.");
-		}else{
-			session.setAttribute("menu", "-1");
-			model.addAttribute("result", "false");
-			model.addAttribute("resultMsg", "로그인이 실패하였습니다.");
-		}
-		return "index";
+	public String login(){
+		return "/login/loginForm";
 	}
 	
 	@RequestMapping(value="/logout")
@@ -82,10 +71,6 @@ public class LoginController {
 	@RequestMapping("/userJoin")
 	public String join(){
 		return "/login/userJoin";
-	}
-	
-	@RequestMapping("/userJoinEmail")
-	public void joinAuth(){
 	}
 	
 	@RequestMapping(value="/evaluation", method = {RequestMethod.GET}, produces = "application/json; charset=UTF-8")
