@@ -35,7 +35,7 @@
 
 .white_content {
 	position: fixed;
-	top: 50%;
+	top: 30%;
 	left: 50%;
 	margin-top: -100px;
 	margin-left: -200px;
@@ -261,10 +261,13 @@ input {
 	<form name="login_member01" class="form form--login" method="post">
 		<div id="evalpop" class="white_content" style="visibility: hidden;">
 			<div class="eval_tit">
-					KKGG 로그인 
+				로그인 
 			</div>
 
 			<div class="list_cover02 p20" style="background-color: lavender; border-radius: 0px 0px 10px 10px / 0px 0px 10px 10px;">
+				<h1>
+					<a href="/"><center class="bold t_notice" style="font-family: sans-serif;">KKGG</center></a>
+				</h1>
 				<div class="site__container">
     <div class="grid__container">
         <div class="form__field">
@@ -303,7 +306,6 @@ input {
 						<p class="t_gray" style="font-size: 15px; padding-top: 10px;">
 							<a href="javascript:loginForm();">로그인</a>
 							<a href="/userJoin" style="margin-left: 30px;">회원가입</a>
-							<a href="#" style="margin-left: 30px;">마이페이지</a>
 							<a href="#" style="margin-left: 30px;">고객센터</a>
 <!-- 						</p> -->
 					</div>

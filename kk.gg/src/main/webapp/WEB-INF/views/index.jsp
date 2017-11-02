@@ -6,7 +6,7 @@
 
 	<div class="main_container">
 		<div class="main_container_area">
-		
+			<img src="img/main_img.jpg">
 		</div>
 	</div>
 	
