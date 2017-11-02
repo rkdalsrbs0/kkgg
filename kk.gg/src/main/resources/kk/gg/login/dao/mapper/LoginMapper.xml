@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="kk.gg.login.dao.mapper.LoginMapper">
+
+	<select id="selectID" parameterType="login" resultType="login">
+		select id, pwd, division
+		from ADMIN
+		where ID = #{id}
+		and pwd = HEX(AES_ENCRYPT(#{pwd},UNHEX(SHA2('My secret passphrase', 512))))
+	</select>
+	
+	<select id="selectFileList" parameterType="HashMap" resultType="map">
+		SELECT A.ID,  
+			   FILE_NM,
+	           SAVE_NM,
+	           FILE_SIZE,
+			   A.CREATED_BY,  
+			   DATE_FORMAT(A.CREATED_AT,'%Y-%m-%d') AS CREATED_AT ,  
+			   A.UPDATED_BY,  
+			   DATE_FORMAT(A.UPDATED_AT,'%Y-%m-%d') AS UPDATED_AT 
+		FROM FILE_L A
+		WHERE 1=1
+		<if test="fileId != null and fileId != ''">
+			AND A.ID = #{fileId}
+		</if>
+		ORDER BY A.SORT DESC , A.ID DESC
+	</select>
+	
+	<select id="excelBuild" resultType="C11ReceiptVO" parameterType="map">
+		select W.IDX num, W.RECEIPT_IDX idx,
+		(select
+			case
+			when RECEIPT_CLF = '0'
+			then '청소년'
+			when RECEIPT_CLF = '1'
+			then '청소년'
+			when RECEIPT_CLF = '2'
+			then '대학생'
+			when RECEIPT_CLF = '3'
+			then '대학생'
+			when RECEIPT_CLF = '4'
+			then '일반인'
+			else '일반인'
+			end
+			from energycontest.RECEIPT
+			where idx = W.RECEIPT_IDX) as target,
+		
+		(select
+			case
+			when RECEIPT_CLF = '0'
+			then '개인'
+			when RECEIPT_CLF = '1'
+			then '팀'
+			when RECEIPT_CLF = '2'
+			then '개인'
+			when RECEIPT_CLF = '3'
+			then '팀'
+			when RECEIPT_CLF = '4'
+			then '개인'
+			else '팀'
+			end
+			from energycontest.RECEIPT
+			where idx = W.RECEIPT_IDX) as 'group',
+		
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX) as valuer1,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX) as valuer2,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX) as valuer3,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX) as valuer4,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX) as valuer5,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX) as valuer6,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX) as valuer7,
+		(select score1 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX) as valuer8,
+		
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)), '0')+
+		ifNull(((select score1 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)), '0') as total,
+				
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer1} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer2} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer3} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer4} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer5} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer6} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer7} and WORK_IDX = W.IDX)), '0', '1')+
+		if(isnull((select score1 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score2 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score3 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)+(select score4 from energycontest.EVALUATION where valuer = #{valuer8} and WORK_IDX = W.IDX)), '0', '1') as rank
+		
+		from energycontest.WORKS W
+		where 
+		<if test="productType==0">
+			(product_type = 0)
+		</if>
+		<if test="productType==3">
+			(product_type = 1)
+		</if> 
+		<if test="productType==1">
+			(product_type = 2 or product_type = 3)
+		</if> 
+		<if test="productType==2">
+			(product_type = 4)
+		</if>
+		order by total/rank desc
+	</select>
+</mapper>

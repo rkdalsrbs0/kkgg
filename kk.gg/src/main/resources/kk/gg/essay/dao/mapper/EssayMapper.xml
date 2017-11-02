@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="kk.gg.essay.dao.mapper.EssayMapper">
+	<select id="selectWorks" resultType="work" parameterType="work">
+		select W.idx idx,
+		W.receipt_idx receiptIdx,
+		R.RECEIPT_CLF receiptClf,
+		W.file_idx fileIdx,
+		W.product_type productType,
+		W.product_name productName,
+		W.product_detail productDetail,
+		(select score1 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score1,
+		(select score2 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score2,
+		(select score3 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score3,
+		(select score4 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score4,
+		(select totalscore from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as totalScore,
+		(select valuer from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as valuer,
+		(select DATE_FORMAT(evaldate,'%Y-%m-%d %h:%i') evalDate from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as evalDate
+		from RECEIPT R
+		left OUTER JOIN WORKS W
+		on R.IDX = W.RECEIPT_IDX
+		where W.product_type = 4
+	</select> 
+	
+	<select id="choiceWork" resultType="work" parameterType="work">
+		select W.idx idx,
+		W.receipt_idx receiptIdx,
+		R.RECEIPT_CLF receiptClf,
+		W.file_idx fileIdx,
+		W.product_type productType,
+		W.product_name productName,
+		W.product_detail productDetail,
+		(select score1 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score1,
+		(select score2 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score2,
+		(select score3 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score3,
+		(select score4 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score4,
+		(select totalscore from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as totalScore,
+		(select valuer from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as valuer,
+		(select DATE_FORMAT(evaldate,'%Y-%m-%d %h:%i') evalDate from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as evalDate
+		from RECEIPT R
+		left OUTER JOIN WORKS W
+		on R.IDX = W.RECEIPT_IDX
+		where W.product_type = 4
+		and W.idx = #{idx}
+	</select>
+	
+	<select id="selectEval" resultType="int" parameterType="work">
+		select count(*)
+		from EVALUATION
+		where 	work_idx=#{idx}
+		and		valuer=#{valuer}
+	</select>
+	
+	<insert id="insertScore" parameterType="work">
+		INSERT INTO EVALUATION ( 
+			   work_idx,
+			   score1,
+			   score2,
+			   score3,
+			   score4,
+			   valuer,
+			   evaldate  
+		) VALUES (
+			   #{idx},
+			   #{score1},
+			   #{score2},
+			   #{score3},
+			   #{score4},
+			   #{valuer},
+			   now()
+		)
+	</insert>
+	
+	<insert id="insertTotal" parameterType="work">
+		INSERT INTO EVALUATION ( 
+			   work_idx,
+			   totalscore,
+			   valuer
+		) VALUES (
+			   #{idx},
+			   #{totalScore},
+			   #{valuer}
+		)
+	</insert>
+	
+	<update id="updateScore" parameterType="work">
+		update EVALUATION
+		set	   score1=#{score1},
+			   score2=#{score2},
+			   score3=#{score3},
+			   score4=#{score4},
+			   valuer=#{valuer},
+			   evaldate=now()
+		where  work_idx=#{idx}
+		and	   valuer=#{valuer}
+	</update>
+	
+	<update id="updateTotal" parameterType="work">
+		update EVALUATION
+		set	  totalscore=#{totalScore}
+		where  work_idx=#{idx}
+		and	   valuer=#{valuer}
+	</update>
+	
+	<select id="searchTitleWorks" resultType="work" parameterType="work">
+		select W.idx idx,
+		W.receipt_idx receiptIdx,
+		R.RECEIPT_CLF receiptClf,
+		W.file_idx fileIdx,
+		W.product_type productType,
+		W.product_name productName,
+		W.product_detail productDetail,
+		(select score1 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score1,
+		(select score2 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score2,
+		(select score3 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score3,
+		(select score4 from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as score4,
+		(select totalscore from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as totalScore,
+		(select valuer from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as valuer,
+		(select DATE_FORMAT(evaldate,'%Y-%m-%d %h:%i') evalDate from EVALUATION where valuer = #{valuer} and WORK_IDX = W.idx) as evalDate
+		from RECEIPT R 
+		left OUTER JOIN WORKS W
+		on R.IDX = W.RECEIPT_IDX
+		where W.product_type = 4
+		and W.product_name LIKE CONCAT('%',#{search},'%')
+	</select>
+</mapper>
