@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="jungle.common.dao.mapper.CommonMapper">
+	<select id="selectBanner" resultType="Banner">
+		select 
+			idx,
+			title,
+			link_url linkUrl,
+			DATE_FORMAT(start_date,'%Y-%m-%d') AS startDate ,
+			DATE_FORMAT(end_date,'%Y-%m-%d') AS endDate ,
+			view_yn viewYn,
+			file_id fileId,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt ,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt ,
+			updated_by updatedBy
+		from BANNER
+		where view_yn = 'Y'
+		<![CDATA[
+		and start_date <= now()
+		and end_date > now()
+		]]>
+		order by start_date asc
+	</select>
+	
+	<select id="selectFile" parameterType="HashMap" resultType="HashMap">
+		select F.ID,
+		F.SAVE_NM,
+		F.EXTENSION
+		from FILE_L F
+		where F.ID = #{id}
+	</select>
+	
+	<select id="selectContents" parameterType="Contents" resultType="Contents">
+		select
+			idx,
+			title,
+			contents_type contentsType,
+			view_location viewLocation,
+			view_yn viewYn,
+			DATE_FORMAT(start_date,'%Y-%m-%d') AS startDate ,
+			thumb_fid thumbFid,
+			content,
+			offer_fid offerFid,
+			video_url videoUrl,
+			file_id fileId,
+			view_count viewCount,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt ,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt ,
+			updated_by updatedBy
+		from CONTENTS
+		where view_yn = 'Y'
+		<![CDATA[
+		and start_date <= now()
+		]]>
+		<if test="search != '' and search != null">
+			and (title LIKE CONCAT('%',#{search},'%')
+			or content LIKE CONCAT('%',#{search},'%'))
+		</if>
+		<if test="contentsType != '' and contentsType != null">
+			and contents_type = #{contentsType}
+		</if>
+		<if test="viewLocation != '' and viewLocation != null">
+			and view_location = #{viewLocation}
+		</if>
+		<if test="viewLocation2 != '' and viewLocation2 != null">
+			or view_location = #{viewLocation2}
+		</if>
+		<if test="viewLocation3 != '' and viewLocation3 != null">
+			or view_location = #{viewLocation3}
+		</if>
+		order by case when layout_order then 2 when null then 1 end desc, start_date desc
+		<if test="minLimit != 0 or maxLimit != 0">
+			limit #{minLimit}, #{maxLimit}
+		</if>
+	</select>
+	
+	<select id="selectContent" parameterType="Contents" resultType="Contents">
+		select idx,
+			title,
+			contents_type contentsType,
+			view_location viewLocation,
+			view_yn viewYn,
+			DATE_FORMAT(start_date,'%Y-%m-%d') AS startDate ,
+			thumb_fid thumbFid,
+			content,
+			offer_fid offerFid,
+			video_url videoUrl,
+			file_id fileId,
+			view_count viewCount,
+			link_url linkUrl,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt ,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt ,
+			updated_by updatedBy,
+			(select save_nm from FILE_L where id = fileId) AS saveNm
+		from CONTENTS
+		where idx = #{idx}
+		<if test="contentsType != '' and contentsType != null">
+			and contents_type = #{contentsType}
+		</if>
+	</select>
+	
+	<insert id="insertContent" parameterType="HashMap">
+ 		<selectKey keyProperty="idx" resultType="String" order="BEFORE">
+			SELECT GET_CREATE_ID('CONTENTS'); 	
+		</selectKey>
+		INSERT INTO CONTENTS ( 
+			   idx,
+			   title,
+			   view_location
+		) VALUES (
+			   #{idx},
+			   #{title},
+			   #{viewLocation}
+		) 
+	</insert>
+	
+	 <select id="preNextContent" parameterType="HashMap" resultType="Contents">
+		select idx,
+			title,
+			contents_type contentsType,
+			view_location viewLocation,
+			view_yn viewYn,
+			DATE_FORMAT(start_date,'%Y-%m-%d') AS startDate ,
+			thumb_fid thumbFid,
+			content,
+			offer_fid offerFid,
+			video_url videoUrl,
+			file_id fileId,
+			view_count viewCount,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt ,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt ,
+			updated_by updatedBy,
+			(select save_nm from FILE_L where id = fileId) AS saveNm
+		from CONTENTS
+		where view_yn = 'Y'
+		<![CDATA[
+		and start_date <= now()
+		]]>
+		<if test="pnType.equals('next')">
+			and idx IN ((SELECT MAX(idx) 
+			FROM CONTENTS WHERE view_location = #{viewLocation} and idx <![CDATA[ < ]]> #{idx}
+		</if>
+		<if test="pnType.equals('pre')">
+			and idx IN ((SELECT MIN(idx) 
+			FROM CONTENTS WHERE view_location = #{viewLocation} and idx <![CDATA[ > ]]> #{idx}
+		</if>
+		<if test="search != '' and search != null">
+			and (title LIKE CONCAT('%',#{search},'%')
+			or content LIKE CONCAT('%',#{search},'%'))
+		</if>
+		))
+		
+	</select>
+	
+	<select id="selectCardNews" parameterType="String" resultType="CardNews">
+		select n.idx,
+			n.cid,
+			n.file_id fileId,
+			DATE_FORMAT(n.created_at,'%Y-%m-%d') AS createdAt ,
+			n.created_by createdBy,
+			DATE_FORMAT(n.updated_at,'%Y-%m-%d') AS updatedAt ,
+			n.updated_by updatedBy
+		from CONTENTS c
+		right join CARD_NEWS n
+		on c.IDX = n.cid
+		where c.idx = #{idx}
+	</select>
+	
+	<select id="selectFileList" parameterType="HashMap" resultType="map">
+		SELECT A.ID,  
+			   FILE_NM fileNm,
+	           SAVE_NM saveNm,
+	           FILE_SIZE,
+			   A.CREATED_BY,  
+			   DATE_FORMAT(A.CREATED_AT,'%Y-%m-%d') AS CREATED_AT ,  
+			   A.UPDATED_BY,  
+			   DATE_FORMAT(A.UPDATED_AT,'%Y-%m-%d') AS UPDATED_AT 
+		FROM FILE_L A
+		WHERE 1=1
+		<if test="fileId != null and fileId != ''">
+			AND A.ID = #{fileId}
+		</if>
+		ORDER BY A.SORT DESC , A.ID DESC
+	</select>
+	
+	<update id="updateContents" parameterType="Contents">
+		update CONTENTS
+		set	   view_count = #{viewCount},
+			   updated_at = now()
+		where  idx=#{idx}
+	</update>
+	
+	<insert id="logInsertSysLog" parameterType="HashMap">
+		INSERT INTO SYS_LOG (
+			   REFERER_URL  ,
+			   REQUEST_URL   ,
+			   REMOTE_IP    ,
+			   OS_INFO ,
+			   BROWSER_INFO   ,
+			   BROWSER_VER  ,
+			   MOBILE_AT ,
+			   REG_DATE    
+		) VALUES (
+				#{refererUrl} ,
+				#{requestUrl} ,
+				#{remoteIp} ,
+				#{osInfo} ,
+				#{browserInfo} ,
+				#{browserVer} ,
+				#{mobileAt} ,
+				now()    
+		)
+	</insert>
+</mapper>

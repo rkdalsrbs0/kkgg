@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="jungle.data.dao.mapper.DataMapper">
+	<select id="selectCatogory" resultType="Category">
+		select idx,
+			category_type categoryType,
+			category_order 'order',
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt,
+			updated_by updatedBy
+		from CATEGORY
+	</select>
+	
+	<select id="selectAsk" resultType="Ask" parameterType="HashMap">
+		select idx,
+			category_id categoryId,
+			title,
+			content,
+			view_yn viewYn,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt,
+			updated_by updatedBy
+		from ASK
+		where 1=1
+		<if test="categoryId != '' and categoryId != null">
+			and category_id = #{categoryId}
+		</if>
+		<if test="search != '' and search != null">
+			and (title LIKE CONCAT('%',#{search},'%')
+			or content LIKE CONCAT('%',#{search},'%'))
+		</if>
+		<if test="limit != 0 and limit != null">
+			limit #{limit}
+		</if>
+	</select>
+	
+	<select id="selectArticles" resultType="HashMap" parameterType="HashMap">
+		select idx,
+			article_type articleType,
+			title,
+			content,
+			file_id fileId,
+			view_count viewCount,
+			view_yn viewYn,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt,
+			updated_by updatedBy
+		from ARTICLE
+		where view_yn = 'y'
+		<if test="search != '' and search != null">
+			and (title LIKE CONCAT('%',#{search},'%')
+			or content LIKE CONCAT('%',#{search},'%'))
+		</if>
+		<if test="limit != 0 and limit != null">
+			limit #{limit}
+		</if>
+	</select>
+	
+	<select id="selectArticle" parameterType="HashMap" resultType="Article">
+		select idx,
+			article_type articleType,
+			title,
+			content,
+			file_id fileId,
+			view_count viewCount,
+			view_yn viewYn,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt,
+			updated_by updatedBy,
+			(select save_nm from FILE_L where id = fileId) AS saveNm
+		from ARTICLE
+		where 1=1
+		and idx = #{idx}
+	</select>
+	
+	<update id="updateArticle" parameterType="HashMap">
+		update ARTICLE
+		set	   view_count = #{viewCount},
+			   updated_at = now()
+		where  idx=#{idx}
+	</update>
+	
+	 <select id="preNextContent" parameterType="HashMap" resultType="Article">
+		select idx,
+			article_type articleType,
+			title,
+			content,
+			file_id fileId,
+			view_count viewCount,
+			view_yn viewYn,
+			DATE_FORMAT(created_at,'%Y-%m-%d') AS createdAt,
+			created_by createdBy,
+			DATE_FORMAT(updated_at,'%Y-%m-%d') AS updatedAt,
+			updated_by updatedBy,
+			(select save_nm from FILE_L where id = fileId) AS saveNm
+		from ARTICLE
+		where 1=1
+		<if test="pnType.equals('next')">
+			and idx IN ((SELECT MAX(idx) 
+			FROM ARTICLE WHERE view_yn = 'y' and idx <![CDATA[ < ]]> #{idx}
+		</if>
+		<if test="pnType.equals('pre')">
+			and idx IN ((SELECT MIN(idx) 
+			FROM ARTICLE WHERE view_yn = 'y' and idx <![CDATA[ > ]]> #{idx}
+		</if>
+		<if test="search != '' and search != null">
+			and (title LIKE CONCAT('%',#{search},'%')
+			or content LIKE CONCAT('%',#{search},'%'))
+		</if>
+		))
+		
+	</select>
+</mapper>

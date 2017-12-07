@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout />
+        </Console>        
+        <RollingFile name="file" fileName="/data/logs/was/server21/papanet.log"
+            filePattern="/data/logs/was/server21/papanet.%d{yyyy-MM-dd-HH-mm-ss}.log"
+            append="false">
+            <PatternLayout pattern="[%-5p: %d{yyyy/MM/dd HH:mm:ss}] %m%n" />
+            <Policies>                
+                <TimeBasedTriggeringPolicy interval="86400"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+ 
+    <!-- FATAL, ERROR, WARN, INFO, DEBUG, TRACE -->
+    <Loggers>        
+        <Root level="DEBUG">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />                                    
+        </Root>
+    </Loggers>
+    
+	 <logger name="org.springframework" level="warn" additivity="false" >
+      <appender-ref ref="console" />
+      <appender-ref ref="file" />
+     </logger>
+
+     <logger name="org.apache.http" level="warn" additivity="false" >
+      <appender-ref ref="console" />
+      <appender-ref ref="file" />
+     </logger>
+
+     <logger name="jungle" level="trace" additivity="false" >
+	 	<appender-ref ref="console" />
+	    <appender-ref ref="file" />
+     </logger>
+	
+</Configuration>
