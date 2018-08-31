@@ -14,5 +14,5 @@
 			<div class="btn_area mt30">
 				<a href="/" class="btn_gray">돌아가기</a> 
 			</div>
-	</div>1
+	</div>
 <c:import url="/WEB-INF/views/include/footer.jsp" />

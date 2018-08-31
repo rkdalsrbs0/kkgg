@@ -4,11 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
      <typeAliases>
-     	<package name="kk.gg.login.domain"/><!--
-     	<package name="goarmy2017.ex.qna.domain"/>
-     	<package name="goarmy2017.ex.notice.domain"/>
-     	<package name="goarmy2017.ex.apply.domain"/>
-     	<package name="goarmy2017.ex.common.domain"/>
-     	<package name="goarmy2017.ex.util.domain"/> -->
+     	<package name="kk.gg.login.domain"/>
+     	<!--
+	     	<package name="goarmy2017.ex.qna.domain"/>
+	     	<package name="goarmy2017.ex.notice.domain"/>
+	     	<package name="goarmy2017.ex.apply.domain"/>
+	     	<package name="goarmy2017.ex.common.domain"/>
+	     	<package name="goarmy2017.ex.util.domain"/> 
+     	-->
      </typeAliases>
 </configuration>
